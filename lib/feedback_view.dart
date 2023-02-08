@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FeedbacksView extends StatelessWidget {
   const FeedbacksView({super.key});
@@ -36,13 +37,26 @@ class FeedbacksView extends StatelessWidget {
             );
           }
 
-          return ListView.builder(itemBuilder: (context, index) {
-            final data = snapData.docs[index].data();
+          return ListView.builder(
+            padding: const EdgeInsets.all(13),
+            itemCount: snapData.docs.length,
+            itemBuilder: (context, index) {
+              final data = snapData.docs[index].data();
 
-            return ListTile(
-              title: data['feedback'],
-            );
-          });
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ListTile(
+                  tileColor: Colors.teal.shade100,
+                  title: Text(data['feedback']),
+                  trailing: Text(
+                    DateFormat('dd\nMMM\nyyyy')
+                        .format(data['createdOn'].toDate()),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            },
+          );
         },
       ),
     );
